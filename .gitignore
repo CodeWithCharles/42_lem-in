@@ -1,3 +1,5 @@
 libftfull.a
 bin/
 buid/
+third_party/*/
+.vscode/
