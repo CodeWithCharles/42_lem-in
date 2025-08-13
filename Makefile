@@ -6,7 +6,7 @@
 #    By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/18 16:33:26 by cpoulain          #+#    #+#              #
-#    Updated: 2025/08/13 12:19:25 by cpoulain         ###   ########.fr        #
+#    Updated: 2025/08/13 14:25:47 by cpoulain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,9 @@ fcleanlibs:
 
 re: fclean all
 
-relibs: dellibs re
+relibs: dellibs libs
+
+libs: $(LIBFT_TARGET)
 
 # Binary / Lib generation
 
@@ -72,4 +74,4 @@ $(LIBFT_TARGET):
 	@cp $(LIBFT_PATH)/$@ ./
 	@cp -u $(LIBFT_PATH)/$(LIBFT_INC_H) $(INC_DIR)/
 
-.PHONY: all clean fclean re cleanlibs fcleanlibs fclean_all dellibs
+.PHONY: all clean fclean re cleanlibs fcleanlibs fclean_all dellibs libs
