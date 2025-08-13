@@ -1,33 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   room.h                                             :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/13 12:23:34 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/13 16:10:19 by cpoulain         ###   ########.fr       */
+/*   Created: 2025/08/13 15:21:38 by cpoulain          #+#    #+#             */
+/*   Updated: 2025/08/13 15:32:47 by cpoulain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "lem-in.h"
 
-#include <stddef.h>
-
-typedef enum e_room_type
+void	exit_error(const char *msg)
 {
-	ROOM = 0,
-	START,
-	EXIT
-}	t_room_type;
-
-typedef struct s_room
-{
-	char		*name;
-	int			x;
-	int			y;
-	int			id;
-	t_room_type	type;
-	struct		s_room	**links;
-	size_t		link_count;
-}	t_room;
+	if (msg && *msg)
+		fd_printf(2, ERROR_FMT, (char *)msg);
+	else
+		fd_printf(2, ERROR_FMT, (char *)ERR_FATAL);
+	if (g_ctx)
+		free_context(g_ctx);
+	exit(EXIT_FAILURE);
+}
