@@ -6,7 +6,7 @@
 #    By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/18 16:33:26 by cpoulain          #+#    #+#              #
-#    Updated: 2025/08/13 14:25:47 by cpoulain         ###   ########.fr        #
+#    Updated: 2025/08/13 16:12:57 by cpoulain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,8 @@ fclean_all: fclean dellibs
 
 dellibs:
 	$(RM) -r $(LIBFT_PATH)
+	$(RM) $(THDPTY_LIBFT_H)
+	$(RM) $(LIBFT_TARGET)
 
 cleanlibs:
 	@$(MAKE) clean -C $(LIBFT_PATH)

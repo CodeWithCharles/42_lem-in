@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   room.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/13 14:30:54 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/14 17:46:36 by cpoulain         ###   ########.fr       */
+/*   Created: 2025/08/13 14:52:46 by cpoulain          #+#    #+#             */
+/*   Updated: 2025/08/13 14:54:12 by cpoulain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem-in.h"
 
-t_context *g_ctx = NULL;
-
-int	main(void)
+t_room	*find_room_by_name(
+	t_farm *farm,
+	const char *name
+)
 {
-	g_ctx = ft_calloc(1, sizeof(t_context));
-	if (!g_ctx)
-		exit_error(ERR_MALLOC);
+	size_t	i;
 
-	g_ctx->farm = ft_calloc(1, sizeof(t_farm));
-	if (!g_ctx->farm)
-		exit_error(ERR_MALLOC);
-	parse_input();
-	validate_farm(g_ctx->farm);
-	print_original_input();
-	free_context(g_ctx);
-	return (0);
+	if (!farm || !name)
+		return (NULL);
+	i = 0;
+	while (i < farm->room_count)
+	{
+		if (farm->rooms[i] && ft_strcmp(farm->rooms[i]->name, name) == 0)
+			return (farm->rooms[i]);
+		i++;
+	}
+	return (NULL);
 }
