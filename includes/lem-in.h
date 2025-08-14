@@ -6,7 +6,7 @@
 /*   By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:32:04 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/13 16:11:33 by cpoulain         ###   ########.fr       */
+/*   Updated: 2025/08/14 17:15:35 by cpoulain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "farm.h"
 #include "libft.h"
 #include "messages.h"
+#include "parsing.h"
 
 #include <stddef.h>
 
@@ -91,3 +92,9 @@ t_room	*parse_room_line(
 void	parse_and_add_link(
 			t_farm	*farm,
 			const char *line);
+
+void	parse_input(void);
+
+void	print_original_input(void);
+
+void	validate_farm(t_farm *farm);

@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/13 14:30:54 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/14 17:46:36 by cpoulain         ###   ########.fr       */
+/*   Created: 2025/08/14 16:16:08 by cpoulain          #+#    #+#             */
+/*   Updated: 2025/08/14 17:16:15 by cpoulain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#pragma once
 
-t_context *g_ctx = NULL;
-
-int	main(void)
-{
-	g_ctx = ft_calloc(1, sizeof(t_context));
-	if (!g_ctx)
-		exit_error(ERR_MALLOC);
-
-	g_ctx->farm = ft_calloc(1, sizeof(t_farm));
-	if (!g_ctx->farm)
-		exit_error(ERR_MALLOC);
-	parse_input();
-	validate_farm(g_ctx->farm);
-	print_original_input();
-	free_context(g_ctx);
-	return (0);
-}
+#define	PRS_START	"##start"
+#define	PRS_END		"##end"
+#define	PRS_ANT_PFX	'L'
+#define	PRS_CMT_PFX '#'
