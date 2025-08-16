@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   room.h                                             :+:      :+:    :+:   */
+/*   room.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/13 12:23:34 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/14 16:12:53 by cpoulain         ###   ########.fr       */
+/*   Created: 2025/08/13 14:52:46 by cpoulain          #+#    #+#             */
+/*   Updated: 2025/08/13 14:54:12 by cpoulain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "lem-in.h"
 
-#include <stddef.h>
-
-typedef enum e_room_type
+t_room	*find_room_by_name(
+	t_farm *farm,
+	const char *name
+)
 {
-	ROOM = 0,
-	START,
-	EXIT
-}	t_room_type;
+	size_t	i;
 
-typedef struct s_room
-{
-	char		*name;
-	int			x;
-	int			y;
-	int			id;
-	t_room_type	type;
-	struct		s_room	**links;
-	size_t		link_count;
-}	t_room;
+	if (!farm || !name)
+		return (NULL);
+	i = 0;
+	while (i < farm->room_count)
+	{
+		if (farm->rooms[i] && ft_strcmp(farm->rooms[i]->name, name) == 0)
+			return (farm->rooms[i]);
+		i++;
+	}
+	return (NULL);
+}
