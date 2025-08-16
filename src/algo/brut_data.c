@@ -6,246 +6,78 @@
 /*   By: jbergos <jbergos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 13:58:41 by jbergos           #+#    #+#             */
-/*   Updated: 2025/08/16 14:05:19 by jbergos          ###   ########.fr       */
+/*   Updated: 2025/08/16 21:47:51 by jbergos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/algo.h"
 #include "../../includes/libft.h"
 
-void free_inside_room(t_context *plan, int idx){
-	for (int i = 0; i < idx; i++)
+int find_link_on_rooms(t_room **rooms, size_t size, size_t idx){
+	for (size_t i = 0; i < size; i++)
 	{
-		free(plan->farm->rooms[i]);
-	}
-	free(plan->farm);
-	free(plan);
-	return ;
-}
-
-int fill_rooms(t_room **rooms){
-	for (int i = 0; i < 8; i++)
-	{
-		t_room **room_link;
-		if (i == 0){
-			rooms[i]->name = ft_strdup("start");
-			rooms[i]->id = i;
-			rooms[i]->link_count = 2;
-			rooms[i]->type = START;
-			room_link = malloc(sizeof(t_room) * (3));
-			rooms[i]->links = room_link;
-			rooms[i]->links[0] = rooms[4];
-			rooms[i]->links[1] = rooms[2]; 
-			rooms[i]->links[2] = NULL; 
-		}
-		if (i == 1){
-			rooms[i]->name = ft_strdup("end");
-			rooms[i]->id = i;
-			rooms[i]->link_count = 2;
-			rooms[i]->type = EXIT;
-			room_link = malloc(sizeof(t_room) * (3));
-			rooms[i]->links = room_link;
-			rooms[i]->links[0] = rooms[7];
-			rooms[i]->links[1] = rooms[3]; 
-			rooms[i]->links[2] = NULL; 
-		}
-		if (i == 2){
-			rooms[i]->name = ft_strdup("1");
-			rooms[i]->id = i;
-			rooms[i]->link_count = 3;
-			rooms[i]->type = ROOM;
-			room_link = malloc(sizeof(t_room) * (4));
-			rooms[i]->links = room_link;
-			rooms[i]->links[0] = rooms[0];
-			rooms[i]->links[1] = rooms[6]; 
-			rooms[i]->links[2] = rooms[3]; 
-			rooms[i]->links[3] = NULL; 
-		}
-		if (i == 3){
-			rooms[i]->name = ft_strdup("2");
-			rooms[i]->id = i;
-			rooms[i]->link_count = 3;
-			rooms[i]->type = ROOM;
-			room_link = malloc(sizeof(t_room) * (4));
-			rooms[i]->links = room_link;
-			rooms[i]->links[0] = rooms[2];
-			rooms[i]->links[1] = rooms[5];
-			rooms[i]->links[2] = rooms[1];  
-			rooms[i]->links[3] = NULL; 
-		}
-		if (i == 4){
-			rooms[i]->name = ft_strdup("3");
-			rooms[i]->id = i;
-			rooms[i]->link_count = 2;
-			rooms[i]->type = ROOM;
-			room_link = malloc(sizeof(t_room) * (3));
-			rooms[i]->links = room_link;
-			rooms[i]->links[0] = rooms[0];
-			rooms[i]->links[1] = rooms[5];  
-			rooms[i]->links[2] = NULL; 
-		}
-		if (i == 5){
-			rooms[i]->name = ft_strdup("4");
-			rooms[i]->id = i;
-			rooms[i]->link_count = 2;
-			rooms[i]->type = ROOM;
-			room_link = malloc(sizeof(t_room) * (3));
-			rooms[i]->links = room_link;
-			rooms[i]->links[0] = rooms[4];
-			rooms[i]->links[1] = rooms[3]; 
-			rooms[i]->links[2] = NULL; 
-		}
-		if (i == 6){
-			rooms[i]->name = ft_strdup("5");
-			rooms[i]->id = i;
-			rooms[i]->link_count = 2;
-			rooms[i]->type = ROOM;
-			room_link = malloc(sizeof(t_room) * (3));
-			rooms[i]->links = room_link;
-			rooms[i]->links[0] = rooms[2];
-			rooms[i]->links[1] = rooms[7];  
-			rooms[i]->links[2] = NULL; 
-		}
-		if (i == 7){
-			rooms[i]->name = ft_strdup("6");
-			rooms[i]->id = i;
-			rooms[i]->link_count = 2;
-			rooms[i]->type = ROOM;
-			room_link = malloc(sizeof(t_room) * (3));
-			rooms[i]->links = room_link;
-			rooms[i]->links[0] = rooms[1];
-			rooms[i]->links[1] = rooms[6];  
-			rooms[i]->links[2] = NULL; 
-		}
-	}
-	return (1);
-}
-
-t_context	*brut_init(void){
-	t_context *ant_plan;
-	t_farm *ant_farm;
-	t_room **all_rooms;
-
-	ant_plan = malloc(sizeof(t_context));
-	if (!ant_plan)
-		return (NULL);
-	ant_farm = malloc(sizeof(t_farm));
-	if (!ant_farm){
-		free(ant_plan);
-		return (NULL);
-	}
-	ant_plan->farm = ant_farm;
-	ant_farm->ant_count = 10;
-	ant_farm->room_count = 8;
-	all_rooms = malloc(sizeof(t_room*) * (ant_farm->room_count + 1));
-	if (!all_rooms){
-		free(ant_plan);
-		free(ant_farm);
-		return (NULL);
-	}
-	ant_farm->rooms = all_rooms;
-	for (int i = 0; i < ant_farm->room_count + 1; i++)
-	{
-		t_room *new_room;
-		if (i == ant_farm->room_count)
-			ant_farm->rooms[i] = NULL;
-		else {
-			new_room = malloc(sizeof(t_room));
-			if (!new_room)
-			{
-				free_inside_room(ant_plan, i);
-				return (NULL);
-			}
-			ant_farm->rooms[i] = new_room;
-		}
-	}
-	ant_farm->end = ant_farm->rooms[1];
-	ant_farm->start = ant_farm->rooms[0];
-	if (!fill_rooms(ant_farm->rooms)){
-		free_inside_room(ant_plan, ant_farm->room_count);
-		return(NULL);
-	}
-	return (ant_plan);
-};
-
-void free_ant(t_context *ant){
-	int i = 0;
-
-	while (ant->farm->rooms[i])
-	{
-		free(ant->farm->rooms[i]->name);
-		free(ant->farm->rooms[i]->links);
-		free(ant->farm->rooms[i]);
-		++i;
-	}
-	free(ant->farm->rooms);
-	free(ant->farm);
-	free(ant);
-}
-
-int find_link_on_rooms(t_room **rooms, int idx){
-	for (int i = 0; rooms[i]; i++)
-	{
-		if (rooms[i]->id == idx)
+		if (rooms[i]->id == (int)idx)
 			return (1);
 	}
 	return (0);
 }
 
-int **create_graph(t_context *ant, int idx){
+int **create_graph(void){
 	int **new_graph;
-
-	new_graph = malloc(sizeof(int *) * (idx));
+	size_t size = g_ctx->farm->room_count;
+	
+	new_graph = malloc(sizeof(int *) * (int)size);
 	if (!new_graph)
 		return (NULL);
-	for (int i = 0; i < idx; i++)
+	for (size_t i = 0; i < size; i++)
 	{
-		new_graph[i] = malloc(sizeof(int) * (idx));
+		new_graph[i] = malloc(sizeof(int) * ((int)size));
 	}
-	for (int i = 0; i < idx; i++)
+	for (size_t i = 0; i < size; i++)
 	{
-		for (int j = 0; j < idx; j++)
+		for (size_t j = 0; j < size; j++)
 		{
 			if (i == j)
 				new_graph[i][j] = 0;
 			else {
-				new_graph[i][j] = find_link_on_rooms(ant->farm->rooms[i]->links, j);
+				new_graph[i][j] = find_link_on_rooms(g_ctx->farm->rooms[i]->links, g_ctx->farm->rooms[i]->link_count ,j);
 			}
 		}
 	}
 	return (new_graph);
 }
 
-void free_graph(int **graph, int size){
-	for (int i = 0; i < size; i++)
+void free_graph(int **graph, size_t size){
+	for (size_t i = 0; i < size; i++)
 	{
 		free(graph[i]);
 	}
 	free(graph);
 }
 
-void show_graph(int **graph, int size){
-	for (int i = 0; i < size; i++)
+void show_graph(int **graph, size_t size){
+	for (size_t i = 0; i < size; i++)
 	{
 		if (i == 0)
-			printf("    |%d|", i);
+			printf("    |%zu|", i);
 		else 
-			printf("|%d|", i);
+			printf("|%zu|", i);
 	}
 	printf("\n");
 	
-	for (int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (size_t j = 0; j < size; j++)
 		{
 			if (j == 0)
-				printf("|%d| ", i);
+				printf("|%zu| ", i);
 			printf (" %d ", graph[i][j]);
 		}
 		printf ("\n");
 	}
 	
 }
+
 void print_ways(int way[], int size){
 	 for (int i = 0; i < size; i++) {
         printf("%d ", way[i]);
@@ -253,22 +85,111 @@ void print_ways(int way[], int size){
     printf("\n");
 }
 
-void dfs(int **graph, int s, int e, int vis[], int way[], int width, int size){
-	vis[s] = 1;
-	way[width] = s;
-	width++;
+void add_path(t_path *res, int *pathing, int size_pathing) {
+	res->list_paths = ft_reallocarray(res->list_paths, (res->nb  + 1), sizeof(int *), res->nb);
+	res->length_paths = ft_reallocarray(res->length_paths, (res->nb + 1), sizeof(int), res->nb);
 
-	if (s == e) {
-		print_ways(way, width);
-	} else {
-		for (int i = 0; i < size; i++)
-		{
-			if (graph[s][i] == 1 && !vis[i]){
-				dfs(graph, i, e, vis, way, width, size);
+	int *copy = malloc(sizeof(int) * size_pathing);
+	for (int i = 0; i < size_pathing; i++) copy[i] = pathing[i];
+	
+	res->list_paths[res->nb] = copy;
+	res->length_paths[res->nb] = size_pathing;
+	res->nb++;
+}
+
+int is_room_alrdy_in_path(int *pathing, int size_pathing, int room) {
+	for (int i = 0; i < size_pathing; i++)
+	{
+		if (pathing[i] == room) return (1);
+	}
+	return (0);
+}
+
+t_pile *create_pile(int mem) {
+	t_pile *base_pile = malloc(sizeof(t_pile));
+	base_pile->pile = malloc(mem * sizeof(t_statut));
+	base_pile->size_pile = -1; // index qui signifie que la pile est vide
+	base_pile->mem_pile = mem; // la taille allouer pour pile 
+	return (base_pile);
+}
+
+int empty_pile(t_pile *base_pile) {
+	return (base_pile->size_pile == -1);
+}
+
+void push_pile(t_pile *base_pile, t_statut sp) {
+	if (base_pile->size_pile + 1 >= base_pile->mem_pile) { // si la taille deviens egale ou superieur que la memoire allouer on double la taille de la pile
+		base_pile->mem_pile *=2;
+		base_pile->pile = realloc(base_pile->pile, base_pile->mem_pile * sizeof(t_statut)); // a changer pour ft_reallocarray
+	}
+	base_pile->pile[++base_pile->size_pile].room = sp.room;
+	base_pile->pile[base_pile->size_pile].len_path = sp.len_path;
+	base_pile->pile[base_pile->size_pile].pathing = malloc(sp.len_path * sizeof(int));
+	for (int i = 0; i < sp.len_path; i++)
+	{
+		base_pile->pile[base_pile->size_pile].pathing[i] = sp.pathing[i];
+	}
+	
+}
+
+t_statut pop_pile(t_pile *base_pile) {
+	return (base_pile->pile[base_pile->size_pile--]);
+}
+
+void dfs(int **graph, int start, int end, t_path *res) {
+	t_pile *pile = create_pile((int)g_ctx->farm->room_count);
+
+	t_statut init;
+	init.room = start;
+	init.len_path = 1;
+	init.pathing = malloc(g_ctx->farm->room_count * sizeof(int));
+	init.pathing[0] = start;
+	push_pile(pile, init);
+	free(init.pathing);
+
+	while (!empty_pile(pile)) {
+		t_statut current_pile = pop_pile(pile);
+
+		if (current_pile.room == end) {
+			add_path(res, current_pile.pathing, current_pile.len_path);
+			free(current_pile.pathing);
+			continue;
+		}
+
+		for (int i = 0; i < (int)g_ctx->farm->room_count; i++) {
+			if (graph[current_pile.room][i] == 1 && !is_room_alrdy_in_path(current_pile.pathing, current_pile.len_path, i)) {
+				t_statut next_pile;
+				next_pile.room = i;
+				next_pile.len_path = current_pile.len_path + 1;
+				next_pile.pathing = malloc(next_pile.len_path * sizeof(int));
+				for (int j = 0; j < current_pile.len_path; j++)
+				{
+					next_pile.pathing[j] = current_pile.pathing[j];
+				}
+				next_pile.pathing[current_pile.len_path] = i;
+				push_pile(pile, next_pile);
+				free(next_pile.pathing);
 			}
 		}
+		free(current_pile.pathing);
 	}
+	free(pile->pile);
+	free(pile);
+}
 
-	width--;
-	vis[s] = 0;
+void show_path(t_path res) {
+	printf("Nombre de chemins simples trouvés : %d\n", res.nb);
+    for (int i = 0; i < res.nb; i++) {
+        printf("Chemin %d : ", i + 1);
+        for (int j = 0; j < res.length_paths[i]; j++) {
+            printf("%d ", res.list_paths[i][j]);
+        }
+        printf("\n");
+    }
+	for (int i = 0; i < res.nb; i++) free(res.list_paths[i]);
+}
+
+void free_path(t_path path){
+	free(path.list_paths);
+	free(path.length_paths);
 }
