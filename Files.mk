@@ -1,4 +1,4 @@
 FILES	=																	\
 	free/exit free/free_context helper/room main parsing/link				\
 	parsing/parsing parsing/post_parsing parsing/room parsing/validator		\
-	algo/brut_data													
+	algo/dfs algo/graph algo/dfs_pile													
