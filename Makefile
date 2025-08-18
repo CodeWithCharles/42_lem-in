@@ -6,7 +6,7 @@
 #    By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/18 16:33:26 by cpoulain          #+#    #+#              #
-#    Updated: 2025/08/13 16:12:57 by cpoulain         ###   ########.fr        #
+#    Updated: 2025/08/18 12:09:18 by cpoulain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ libs: $(LIBFT_TARGET)
 
 # Binary / Lib generation
 
-$(TARGET): $(THDPTY_LIBFT_H) $(OBJS)
+$(TARGET): $(THDPTY_LIBFT_H) $(OBJS) $(VIS_NODE)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(OBJS) -I$(INC_DIR) $(LIBFT_TARGET) -o $@ $(LFLAGS)
 
@@ -76,4 +76,19 @@ $(LIBFT_TARGET):
 	@cp $(LIBFT_PATH)/$@ ./
 	@cp -u $(LIBFT_PATH)/$(LIBFT_INC_H) $(INC_DIR)/
 
-.PHONY: all clean fclean re cleanlibs fcleanlibs fclean_all dellibs libs
+
+$(VIS_NODE):
+	@if [ ! -d "$(VIS_TARGET)" ]; then \
+		git clone $(VIS_GIT) $(VIS_DIR);\
+	fi
+	@if [ ! -d "$(VIS_NODE)" ]; then \
+		cd $(VIS_DIR) && npm i;\
+	fi
+
+vis_to_dev:
+	cd $(VIS_DIR) && $(GIT_REMOTE_RM) && $(GIT_REMOTE_ADD) $(VIS_GIT_SSH)
+
+vis_to_prod:
+	cd $(VIS_DIR) && $(GIT_REMOTE_RM) && $(GIT_REMOTE_ADD) $(VIS_GIT)
+
+.PHONY: all clean fclean re cleanlibs fcleanlibs fclean_all dellibs libs vis_to_dev vis_to_prod

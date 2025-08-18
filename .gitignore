@@ -3,3 +3,4 @@ bin/
 build/
 third_party/*/
 .vscode/
+lem-in-visualizer/
