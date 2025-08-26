@@ -6,7 +6,7 @@
 /*   By: jbergos <jbergos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 16:19:59 by jbergos           #+#    #+#             */
-/*   Updated: 2025/08/22 17:24:40 by jbergos          ###   ########.fr       */
+/*   Updated: 2025/08/26 19:01:51 by jbergos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,21 @@
 
 void add_path_combined(t_path_comb *res, t_path_combined *path_res){
 	res->combined_paths = ft_reallocarray(res->combined_paths, (res->nb + 1), sizeof(t_path*), res->nb);
+	res->combined_paths[res->nb]->list_paths = malloc(sizeof(int*) * path_res->nb);
+	res->combined_paths[res->nb]->length_paths = malloc(sizeof(int) * path_res->nb);
+	for (int i = 0; i < path_res->nb; i++)
+	{
+		res->combined_paths[res->nb]->length_paths[i] = path_res->length_paths[i];
+	}
+	for (int i = 0; i < path_res->nb; i++)
+	{
+		res->combined_paths[res->nb]->list_paths[i] = malloc(sizeof(int) * path_res->length_paths[i]);
+		for (int j = 0; j < path_res->length_paths[i]; j++)
+		{
+			res->combined_paths[res->nb]->list_paths[i][j] = path_res->list_paths[i][j];
+		}
+	}
+	res->combined_paths[res->nb]->nb = path_res->nb;
 	res->nb++;
 }
 
@@ -68,6 +83,37 @@ void pruning_path(t_path_combined *path, t_path *all_path) {
 	
 }
 
+void cp_cur_pile_to_next_pile(t_path_combined *current_pile, t_path_combined *next_pile){
+	next_pile->nb = current_pile->nb + 1;
+	next_pile->nb_rooms = current_pile->nb_rooms;
+	next_pile->rooms_taken = current_pile->rooms_taken;
+	next_pile->nb_path = current_pile->nb_path;
+	next_pile->rooms = malloc(sizeof(int) * next_pile->nb_rooms);
+	for (int i = 0; i < next_pile->nb_rooms; i++)
+	{
+		next_pile->rooms[i] = current_pile->rooms[i];
+	}
+	next_pile->possible_paths = malloc(sizeof(int) * next_pile->nb_path);
+	for (int i = 0; i < next_pile->nb_path; i++)
+	{
+		next_pile->possible_paths[i] = current_pile->possible_paths[i];
+	}
+	next_pile->list_paths = malloc(sizeof(int *) * next_pile->nb);
+	next_pile->length_paths = malloc(sizeof(int) * next_pile->nb);
+	for (int i = 0; i < current_pile->nb; i++)
+	{
+		next_pile->length_paths[i] = current_pile->length_paths[i];
+	}
+	for (int i = 0; i < current_pile->nb; i++)
+	{
+		next_pile->list_paths[i] = malloc(sizeof(int) * next_pile->length_paths[i]);
+		for (int j = 0; j < current_pile->length_paths[i]; j++)
+		{
+			next_pile->list_paths[i][j] = current_pile->list_paths[i][j];
+		}	
+	}
+}
+
 int resting_possible_path(int *all_pathing, int nb_path) {
 	for (int i = 0; i < nb_path; i++)
 	{
@@ -114,26 +160,18 @@ void *find_best_path(t_path *all_path, t_path_comb *combined_path, int idx){
 		{
 			if (!current_pile.possible_paths[i]) {
 				t_path_combined next_pile;
-				next_pile.nb++;
-				init.length_paths = malloc(sizeof(int) * next_pile.nb);
-				for (int j = 0; j < current_pile.nb; j++)
+				cp_cur_pile_to_next_pile(&current_pile, &next_pile);
+				next_pile.list_paths[next_pile.nb] = malloc(sizeof(int) * all_path->length_paths[i]);
+				for (int j = 0; j < all_path->length_paths[i] ; j++)
 				{
-					next_pile.length_paths[j] = current_pile.length_paths[i];
+					next_pile.list_paths[next_pile.nb][j] = all_path->list_paths[i][j];
 				}
-				next_pile.length_paths[next_pile.nb - 1] = all_path->length_paths[i];
-				next_pile.list_paths = malloc(sizeof(int*) * next_pile.nb);
-				for (int j = 0; j < next_pile.nb; j++)
-				{
-					next_pile.list_paths[j] = malloc(sizeof(int) * next_pile.length_paths[j]);
-					for (int k = 0; k < next_pile.length_paths[j]; k++)
-					{
-						/* code */
-					}
-					
-				}
-				
+				visited_rooms(next_pile.rooms, all_path->list_paths[i], all_path->length_paths[i]);
+				pruning_path(&next_pile, all_path);
+				push_path_pile(pile, next_pile);
+				free_path_combined(&next_pile);
 			}
 		}
-		
+		free_path_combined(&current_pile);
 	}
 }
