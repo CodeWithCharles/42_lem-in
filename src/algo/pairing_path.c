@@ -6,7 +6,7 @@
 /*   By: jbergos <jbergos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 16:19:59 by jbergos           #+#    #+#             */
-/*   Updated: 2025/08/26 19:01:51 by jbergos          ###   ########.fr       */
+/*   Updated: 2025/08/27 18:30:40 by jbergos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,6 @@ void add_path_combined(t_path_comb *res, t_path_combined *path_res){
 	}
 	res->combined_paths[res->nb]->nb = path_res->nb;
 	res->nb++;
-}
-
-t_path_comb *best_combined_path(t_path *all_path) {
-	t_path_comb *comb_path;
-	comb_path = malloc(sizeof(t_path *));
-	comb_path->combined_paths[0] = NULL;
-	comb_path->nb = 0;
-
-	for (int i = 0; i < all_path->nb; i++)
-	{
-		
-	}
 }
 void free_path_combined(t_path_combined *path){
 	for (int i = 0; i < path->nb; i++)
@@ -123,8 +111,8 @@ int resting_possible_path(int *all_pathing, int nb_path) {
 	return (0);
 }
 
-void *find_best_path(t_path *all_path, t_path_comb *combined_path, int idx){
-	t_path_pile *pile = create_pile_path(10);
+void find_best_path(t_path *all_path, t_path_comb *combined_path, int idx){
+	t_path_pile *pile = create_pile_path(100);
 
 	t_path_combined init;
 	init.nb = 1;
@@ -132,7 +120,7 @@ void *find_best_path(t_path *all_path, t_path_comb *combined_path, int idx){
 	init.length_paths[0] = all_path->length_paths[idx];
 	init.list_paths = malloc(sizeof(int *));
 	init.list_paths[0] = malloc(sizeof(int) * init.length_paths[0]);
-	for (int i = 0; i < init.length_paths; i++)
+	for (int i = 0; i < init.length_paths[0]; i++)
 	{
 		init.list_paths[0][i] = all_path->list_paths[idx][i];
 	}
@@ -174,4 +162,19 @@ void *find_best_path(t_path *all_path, t_path_comb *combined_path, int idx){
 		}
 		free_path_combined(&current_pile);
 	}
+}
+#include <stdio.h>
+t_path_comb *best_combined_path(t_path *all_path) {
+	t_path_comb *comb_path;
+	comb_path = malloc(sizeof(t_path_comb));
+	comb_path->combined_paths = malloc(sizeof(t_path*));
+	comb_path->combined_paths[0] = NULL;
+	comb_path->nb = 0;
+
+	for (int i = 0; i < all_path->nb; i++)
+	{
+		printf("int value : %d\n", i);
+		find_best_path(all_path, comb_path, i);
+	}
+	return (comb_path);
 }

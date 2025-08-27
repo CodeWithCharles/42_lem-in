@@ -6,7 +6,7 @@
 /*   By: jbergos <jbergos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 14:45:55 by jbergos           #+#    #+#             */
-/*   Updated: 2025/08/22 16:08:25 by jbergos          ###   ########.fr       */
+/*   Updated: 2025/08/27 17:57:49 by jbergos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 t_path_pile *create_pile_path(int mem) {
 	t_path_pile *base_pile = malloc(sizeof(t_path_pile));
-	base_pile->pile = malloc(malloc(mem * sizeof(t_path_combined)));
+	base_pile->pile = malloc(mem * sizeof(t_path_combined));
 	base_pile->size_pile = -1;
 	base_pile->mem_pile = mem;
 	return (base_pile);

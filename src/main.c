@@ -6,7 +6,7 @@
 /*   By: jbergos <jbergos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:30:54 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/16 21:48:35 by jbergos          ###   ########.fr       */
+/*   Updated: 2025/08/27 18:24:09 by jbergos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,16 @@ int	main(void)
 	// algo
 	int **graph = create_graph();
 	show_graph(graph, g_ctx->farm->room_count);
-	t_path res = {NULL, NULL, 0};
-	dfs(graph, g_ctx->farm->start->id, g_ctx->farm->end->id, &res);
-	show_path(res);
-	free_path(res);
+	// t_path res = {NULL, NULL, 0};
+	t_path *res;
+	res = malloc(sizeof(t_path));
+	res->length_paths = NULL;
+	res->list_paths = NULL;
+	res->nb = 0;
+	dfs(graph, g_ctx->farm->start->id, g_ctx->farm->end->id, res);
+	show_path((*res));
+	best_combined_path(res);
+	free_path((*res));
 	// free graph
 	free_graph(graph, g_ctx->farm->room_count);
 	//end algo

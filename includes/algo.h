@@ -6,7 +6,7 @@
 /*   By: jbergos <jbergos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 13:50:58 by jbergos           #+#    #+#             */
-/*   Updated: 2025/08/22 16:53:36 by jbergos          ###   ########.fr       */
+/*   Updated: 2025/08/27 17:56:00 by jbergos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,4 +135,5 @@ void				push_path_pile(
 t_path_combined		pop_path_pile(
 						t_path_pile *base_pile);
 
+t_path_comb *best_combined_path(t_path *all_path);
 #endif
