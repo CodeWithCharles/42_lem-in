@@ -6,7 +6,7 @@
 /*   By: jbergos <jbergos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 13:50:58 by jbergos           #+#    #+#             */
-/*   Updated: 2025/08/27 17:56:00 by jbergos          ###   ########.fr       */
+/*   Updated: 2025/08/29 15:50:35 by jbergos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,10 @@ void 	add_path(
 			int size_pathing);
 
 void	show_path(
-			t_path res);
+			t_path *res);
 
 void	free_path(
-			t_path path);
+			t_path *path);
 
 /*---------------------------------------------------------------------------------------*/
 /*                                           PATH_PILE                                   */
@@ -134,6 +134,8 @@ void				push_path_pile(
 
 t_path_combined		pop_path_pile(
 						t_path_pile *base_pile);
+
+void free_path_comb(t_path_comb *val);
 
 t_path_comb *best_combined_path(t_path *all_path);
 #endif

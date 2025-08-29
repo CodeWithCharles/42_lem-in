@@ -6,7 +6,7 @@
 /*   By: jbergos <jbergos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 14:30:54 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/27 18:24:09 by jbergos          ###   ########.fr       */
+/*   Updated: 2025/08/29 16:29:13 by jbergos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,17 @@ int	main(void)
 	res->list_paths = NULL;
 	res->nb = 0;
 	dfs(graph, g_ctx->farm->start->id, g_ctx->farm->end->id, res);
-	show_path((*res));
-	best_combined_path(res);
-	free_path((*res));
-	// free graph
+	show_path(res);
+	t_path_comb *bcp;
+	bcp = best_combined_path(res);
+	// for (int i = 0; i < bcp->nb; i++)
+	// {
+	// 	printf("%d : combined path\n", i);
+	// 	show_path(bcp->combined_paths[i]);
+	// }
+	free_path(res);
+	free(res);
+	free(bcp);
 	free_graph(graph, g_ctx->farm->room_count);
 	//end algo
 	free_context(g_ctx);

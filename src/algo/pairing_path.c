@@ -6,7 +6,7 @@
 /*   By: jbergos <jbergos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 16:19:59 by jbergos           #+#    #+#             */
-/*   Updated: 2025/08/27 18:30:40 by jbergos          ###   ########.fr       */
+/*   Updated: 2025/08/29 16:29:02 by jbergos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,18 @@ void find_best_path(t_path *all_path, t_path_comb *combined_path, int idx){
 		}
 		free_path_combined(&current_pile);
 	}
+	free(pile->pile);
+	free(pile);
 }
+
+void free_path_comb(t_path_comb *val){
+	for (int i = 0; i < val->nb; i++)
+	{
+		free_path(val->combined_paths[i]);
+	}
+	free(val);
+}
+
 #include <stdio.h>
 t_path_comb *best_combined_path(t_path *all_path) {
 	t_path_comb *comb_path;

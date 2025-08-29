@@ -6,7 +6,7 @@
 /*   By: jbergos <jbergos@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 15:32:22 by jbergos           #+#    #+#             */
-/*   Updated: 2025/08/17 15:34:18 by jbergos          ###   ########.fr       */
+/*   Updated: 2025/08/29 15:41:30 by jbergos          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,24 @@ void dfs(int **graph, int start, int end, t_path *res) {
 	free(pile);
 }
 
-void show_path(t_path res) {
-	printf("Nombre de chemins simples trouvés : %d\n", res.nb);
-    for (int i = 0; i < res.nb; i++) {
+void show_path(t_path *res) {
+	printf("Nombre de chemins simples trouvés : %d\n", res->nb);
+    for (int i = 0; i < res->nb; i++) {
         printf("Chemin %d : ", i + 1);
-        for (int j = 0; j < res.length_paths[i]; j++) {
-            printf("%d ", res.list_paths[i][j]);
+        for (int j = 0; j < res->length_paths[i]; j++) {
+            printf("%d ", res->list_paths[i][j]);
         }
         printf("\n");
     }
-	for (int i = 0; i < res.nb; i++) free(res.list_paths[i]);
+	// for (int i = 0; i < res->nb; i++) free(res->list_paths[i]);
 }
 
-void free_path(t_path path){
-	free(path.list_paths);
-	free(path.length_paths);
+void free_path(t_path *path){
+	for (int i = 0; i < path->nb; i++)
+	{
+		free(path->list_paths[i]);
+	}
+	
+	free(path->list_paths);
+	free(path->length_paths);
 }
